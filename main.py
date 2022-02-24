@@ -1,6 +1,7 @@
 import json 
 import random 
-import sys
+import os
+from collections import Counter 
 
 words = []
 fiveletterwords = []
@@ -22,7 +23,7 @@ i = 0
 j = 0
 
 
-
+filelocation = os.path.join("/Users/kille/Documents/Python\Machine Learning/WordleSolver", "fiveletterwords.json")
 
 class Game: 
     def __init__(self, dummy):
@@ -30,7 +31,7 @@ class Game:
 
     def newDataLoad(self, new):
         if new == 1: 
-            with open('fiveletterwords.json') as json_file:
+            with open(filelocation) as json_file:
                 global data
                 data = json.load(json_file)
                 print("Loaded")
@@ -59,7 +60,7 @@ class Game:
         WordChoices = [data]
         FirstWord = WordChoices[pointer] #Work on removing unneeded letters first
     
-    def wordcolor(self, choice, guess, i, Repeat): 
+    def wordcolor(self, choice, guess): 
         guesscolor = dict()
         choiceword = []
         guesslist = []
@@ -88,12 +89,22 @@ class Game:
 
         lengthofword = len(guesslist)
 
-        totalsame = 1 
+        totalsame = 0 
 
         sameword = 0
         
+        countsguess = Counter(guessh)
+        duplicatesguess = [c for c in countsguess if countsguess[c] > 1 ]
+        countschoice = Counter(choice)
+        duplicateschoices = [c for c in countschoice if countschoice[c] > 1]
 
-
+        for a in duplicateschoices:
+            if a == None: 
+                duplicateschoices.append("None")
+        for a in duplicatesguess:
+            if a == None: 
+                duplicatesguess.append("None")
+        
         while(counter < lengthofword):
             if guessdict[counter] in choicedict.values():
 
@@ -105,6 +116,8 @@ class Game:
                     a = guessdict[counter]
                     guesscolor[a] = "green"
                 
+
+
                 else: 
                     a = guessdict[counter]
                     guesscolor[a] = "orange"
@@ -156,7 +169,7 @@ elif StartIO == True and Comporhuman == 1:
         print('\n')
         guessh = str(input(f"input your guess no. {p + 1}: "))
         if len(guessh) == 5:
-            Game(0).wordcolor(choice, guessh, i, Repeat = 1)
+            Game(0).wordcolor(choice, guessh)
             p += 1 
         else: 
             print("input 5 letter word")
