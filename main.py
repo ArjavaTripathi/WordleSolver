@@ -79,11 +79,6 @@ class Game:
         for idx, value in enumerate(guesslist): 
             guessdict[idx] = value
         
-        guesscolor[0] = guesslist[0]
-        guesscolor[1] = guesslist[1]
-        guesscolor[2] = guesslist[2]
-        guesscolor[3] = guesslist[3]
-        guesscolor[4] = guesslist[4]
 
         counter = 0
 
@@ -97,14 +92,10 @@ class Game:
         duplicatesguess = [c for c in countsguess if countsguess[c] > 1 ]
         countschoice = Counter(choice)
         duplicateschoices = [c for c in countschoice if countschoice[c] > 1]
-
-        for a in duplicateschoices:
-            if a == None: 
-                duplicateschoices.append("None")
-        for a in duplicatesguess:
-            if a == None: 
-                duplicatesguess.append("None")
         
+        print(duplicateschoices + duplicatesguess)
+        
+
         while(counter < lengthofword):
             if guessdict[counter] in choicedict.values():
 
@@ -116,7 +107,14 @@ class Game:
                     a = guessdict[counter]
                     guesscolor[a] = "green"
                 
-
+                elif len(duplicateschoices) == 0:
+                    for values in duplicateschoices: 
+                        dummyfunc = []
+                        dummyfunc.append(values) 
+                        if len(dummyfunc) > 1: 
+                            killword = choiceword.index(values)
+                            choiceword[killword] = "Dummy"
+                            break #Append word into list after verifying its position
 
                 else: 
                     a = guessdict[counter]
